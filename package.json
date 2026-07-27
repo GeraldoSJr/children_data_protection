@@ -1,0 +1,28 @@
+{
+  "name": "verificajus-sigilo",
+  "version": "0.1.0",
+  "description": "VerificaJus Sigilo — validacao de documentos judiciais sigilosos da Vara da Infancia e da Juventude",
+  "type": "module",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test mocha",
+    "deploy": "hardhat run scripts/deploy.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeraldoSJr/children_data_protection.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.7",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^26.1.2",
+    "chai": "^5.3.3",
+    "ethers": "^6.17.0",
+    "hardhat": "^3.11.1",
+    "typescript": "^7.0.2"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true
+  }
+}
