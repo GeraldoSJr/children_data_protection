@@ -71,6 +71,17 @@ Rodar os testes:
 npx hardhat test mocha
 ```
 
+Rodar a demonstração narrada do ciclo de vida completo:
+
+```bash
+npx hardhat run scripts/demo.ts
+```
+
+O roteiro implanta os contratos do zero, expede um alvará, consulta o status como
+Polícia Federal, **mostra o conteúdo bruto do registro on-chain** — para evidenciar que
+não há dado pessoal algum lá —, exibe o que cada perfil pode ver, revoga por decisão
+judicial e consulta de novo. É reproduzível diante da banca e funciona igual na Sepolia.
+
 Implantar na Hardhat Network e registrar a vara e as políticas de divulgação:
 
 ```bash
@@ -104,6 +115,7 @@ npx hardhat run scripts/deploy.ts --network sepolia
 contracts/          Tipos.sol, AccessRegistry, DisclosurePolicy, DocumentRegistry
 test/               Suíte do ciclo de vida do documento
 scripts/deploy.ts   Implantação e configuração inicial
+scripts/demo.ts     Roteiro narrado de demonstração
 docs/               Diagramas de arquitetura e de classes
 docs/initial_info/  Enunciado e proposta original do Núcleo Jurídico
 ```
