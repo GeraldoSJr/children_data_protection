@@ -114,19 +114,50 @@ npx hardhat run scripts/deploy.ts --network sepolia
 ```
 contracts/          Tipos.sol, AccessRegistry, DisclosurePolicy, DocumentRegistry
 test/               Suíte do ciclo de vida do documento
-scripts/deploy.ts   Implantação e configuração inicial
+scripts/deploy.ts   Implantação e configuração inicial (+ exporta config pro frontend)
 scripts/demo.ts     Roteiro narrado de demonstração
+frontend/           Entrega 2 — tela única falando com contrato real
 docs/               Diagramas de arquitetura e de classes
 docs/initial_info/  Enunciado e proposta original do Núcleo Jurídico
 ```
+
+## Entrega 2 — tela conectada à rede Besu da disciplina
+
+Requer a rede [`bc101-dev-env`](https://github.com/ccufcg/bc101-dev-env) rodando localmente
+(`docker compose --profile blockchain up -d`).
+
+1. Implantar os contratos na rede Besu — isso também gera `frontend/contracts.config.js`
+   com os endereços e o ABI atuais:
+
+   ```bash
+   npx hardhat run scripts/deploy.ts --network besu
+   ```
+
+2. Servir a pasta `frontend/` como estático (não abrir o `index.html` direto com
+   `file://`, o navegador bloqueia o `fetch` do script de config):
+
+   ```bash
+   npx serve frontend
+   # ou: python3 -m http.server 8080 --directory frontend
+   ```
+
+3. Abrir a URL impressa (ex.: `http://localhost:3000`) e rodar o fluxo:
+   **emitir → consultar (Valido) → revogar → consultar de novo (Revogado)**.
+   Cada ação mostra o hash real da transação — confira no block explorer da rede
+   (`http://localhost:5000`) durante a apresentação.
+
+A conta que assina como vara emissora é a mesma configurada em `hardhat.config.ts` para a
+rede `besu` — uma das contas de teste públicas do `bc101-dev-env`. É só para esta rede
+local da disciplina; nunca reaproveitar chaves assim em produção.
 
 ## Escopo desta entrega
 
 Entregue: os três contratos com toda a superfície do diagrama de classes, suíte de testes
 do caminho central, script de implantação, e os dois diagramas.
 
-Ainda não entregue, por decisão de escopo: página de validação, geração de QR Code, cofre
-de PII, painel administrativo e integração SEI/PJe. Esses componentes aparecem no diagrama
-de arquitetura — o enunciado pede explicitamente o que fica fora da blockchain — mas
-nenhum código foi escrito para eles. Validações exaustivas, tratamento de erros e casos de
-borda também ficam para as entregas seguintes.
+Ainda não entregue, por decisão de escopo: geração de QR Code, cofre de PII completo,
+painel administrativo e integração SEI/PJe. A tela da Entrega 2 cobre um único fluxo de
+ponta a ponta (emitir → consultar → revogar → consultar) contra contrato real, como pede o
+enunciado — não a página de validação completa com exibição seletiva por perfil, que fica
+para a Entrega 3 junto com `DisclosurePolicy` na interface. Validações exaustivas e
+tratamento de erros também ficam para as entregas seguintes.
