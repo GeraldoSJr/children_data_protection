@@ -113,8 +113,20 @@ a cadeia seja privada. Hash salgado, motivo codificado e ausência de PII fazem 
 registros serem seguros mesmo em rede pública. A rede permissionada é defesa em
 profundidade, não a defesa principal.
 
+## Onde cada peça mora no código
+
+| Componente do diagrama | Arquivo |
+|---|---|
+| Painel da Vara | `frontend/admin.html` + `frontend/admin.js` |
+| Serviço Emissor (hash + QR Code) | `frontend/admin.js` (gera o hash salgado e o QR ao emitir) |
+| Cofre de Dados TJPB | `frontend/cofre.mock.js` — mock em localStorage, não o cofre definitivo |
+| Página de Validação | `frontend/validar.html` + `frontend/validar.js` |
+| Código comum (rede, contratos, campos) | `frontend/shared.js` |
+
 ## Fora do escopo desta entrega
 
-Página de validação, geração de QR Code, cofre de PII, painel administrativo e
-integração SEI/PJe aparecem no diagrama porque o enunciado pede explicitamente o que
-fica fora da blockchain. Nenhum código foi entregue para esses componentes na Entrega 1.
+A integração real com PJe/SEI e o cofre de PII definitivo do TJPB seguem fora do
+escopo: o protótipo usa `frontend/cofre.mock.js`, um mock em localStorage do navegador,
+no lugar do serviço com controle de acesso próprio que o TJPB operaria em produção. O
+mock é suficiente para demonstrar a fronteira do modelo — o que sai da blockchain e como
+a página de validação exibe só os campos liberados —, mas não é código de produção.

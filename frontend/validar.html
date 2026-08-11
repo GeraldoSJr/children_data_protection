@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VerificaJus Sigilo — Validação</title>
+<link rel="stylesheet" href="./estilos.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.17.0/ethers.umd.min.js"></script>
+</head>
+<body>
+
+<h1>VerificaJus Sigilo</h1>
+<p class="subtitulo">Confira a autenticidade e a vigência de um alvará de viagem — sem acesso aos autos.</p>
+<nav class="paginas">
+  <a href="./admin.html">Painel da Vara</a>
+  <a href="./validar.html" class="ativa">Tela de validação</a>
+</nav>
+
+<div id="estadoRede">Conectando à rede…</div>
+
+<div class="card">
+  <h2>Documento</h2>
+  <p class="ajuda">O docId abaixo vem do QR Code impresso no documento — ele não leva a lugar nenhum dentro do processo.</p>
+
+  <label for="docId">docId</label>
+  <input id="docId" type="text" placeholder="0x…" />
+
+  <label for="perfil">Quem está consultando</label>
+  <select id="perfil">
+    <option value="2">Polícia Federal</option>
+    <option value="3">Companhia aérea</option>
+    <option value="4">Conselho Tutelar</option>
+  </select>
+
+  <button id="btnValidar">Validar documento</button>
+  <div class="resultado" id="resultadoValidar"></div>
+</div>
+
+<script src="./contracts.config.js"></script>
+<script src="./shared.js"></script>
+<script src="./cofre.mock.js"></script>
+<script src="./validar.js"></script>
+</body>
+</html>

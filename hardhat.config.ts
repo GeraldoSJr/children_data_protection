@@ -31,6 +31,11 @@ const config: HardhatUserConfig = {
         "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
         // conta 1 — assume o papel de vara emissora no deploy.ts
         "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3",
+        // conta 2 — a última publicada pelo bc101-dev-env. O deploy.ts usa
+        // essa conta como "leitor genérico" (assina registrarConsulta na
+        // tela de validação) quando a rede não tem contas dedicadas para
+        // os três perfis consulentes (só a hardhatOp local tem).
+        "0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f",
       ],
     },
     sepolia: {

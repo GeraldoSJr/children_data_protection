@@ -4,9 +4,16 @@ window.VERIFICAJUS_CONFIG = {
   "network": "besu",
   "chainId": 1337,
   "varaEndereco": "0x627306090abaB3A6e1400e9345bC60c78a8BEf57",
+  "perfis": {
+    "contasDedicadas": false,
+    "leitorGenerico": "0xf17f52151EbEF6C7334FAD080c5704D77216b732",
+    "policiaFederal": null,
+    "ciaAerea": null,
+    "conselhoTutelar": null
+  },
   "contratos": {
     "DocumentRegistry": {
-      "endereco": "0x9a3DBCa554e9f6b9257aAa24010DA8377C57c17e",
+      "endereco": "0x3Ace09BBA3b8507681146252d3Dd33cD4E2d4F63",
       "abi": [
         {
           "inputs": [
@@ -318,7 +325,7 @@ window.VERIFICAJUS_CONFIG = {
       ]
     },
     "AccessRegistry": {
-      "endereco": "0x42699A7612A82f1d9C36148af9C77354759b210b",
+      "endereco": "0xBF921f94Fd9eF1738bE25D8CeCFDFE2C822c81B0",
       "abi": [
         {
           "inputs": [],
@@ -464,6 +471,136 @@ window.VERIFICAJUS_CONFIG = {
             }
           ],
           "name": "temPapel",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+    },
+    "DisclosurePolicy": {
+      "endereco": "0xBeC8a9e485a4B75d3b14249de7CA6D124fE94795",
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "contract AccessRegistry",
+              "name": "registroDeAcessos",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "enum TipoDocumento",
+              "name": "tipo",
+              "type": "uint8"
+            },
+            {
+              "indexed": true,
+              "internalType": "enum Papel",
+              "name": "papel",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "totalCampos",
+              "type": "uint256"
+            }
+          ],
+          "name": "PoliticaDefinida",
+          "type": "event"
+        },
+        {
+          "inputs": [],
+          "name": "acessos",
+          "outputs": [
+            {
+              "internalType": "contract AccessRegistry",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "enum TipoDocumento",
+              "name": "tipo",
+              "type": "uint8"
+            },
+            {
+              "internalType": "enum Papel",
+              "name": "papel",
+              "type": "uint8"
+            }
+          ],
+          "name": "camposLiberados",
+          "outputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "",
+              "type": "bytes32[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "enum TipoDocumento",
+              "name": "tipo",
+              "type": "uint8"
+            },
+            {
+              "internalType": "enum Papel",
+              "name": "papel",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "campos",
+              "type": "bytes32[]"
+            }
+          ],
+          "name": "definirPolitica",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "enum TipoDocumento",
+              "name": "tipo",
+              "type": "uint8"
+            },
+            {
+              "internalType": "enum Papel",
+              "name": "papel",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "campo",
+              "type": "bytes32"
+            }
+          ],
+          "name": "podeVerCampo",
           "outputs": [
             {
               "internalType": "bool",

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VerificaJus Sigilo — Painel da Vara</title>
+<link rel="stylesheet" href="./estilos.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.17.0/ethers.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<h1>VerificaJus Sigilo</h1>
+<p class="subtitulo">Painel da Vara da Infância e da Juventude — emissão, revogação e cofre de PII.</p>
+<nav class="paginas">
+  <a href="./admin.html" class="ativa">Painel da Vara</a>
+  <a href="./validar.html">Tela de validação</a>
+</nav>
+
+<div id="estadoRede">Conectando à rede…</div>
+
+<div class="card">
+  <h2>1 · Emitir alvará de viagem</h2>
+  <p class="ajuda">
+    Grava só o hash salgado e os metadados na blockchain (<code>issueDocument</code>).
+    Os dados pessoais abaixo vão para o cofre do TJPB, fora da cadeia — ver
+    <a href="../docs/arquitetura.md" target="_blank" rel="noopener">docs/arquitetura.md</a>.
+  </p>
+
+  <label for="docRef">Referência do documento (vira o docId opaco do QR Code)</label>
+  <input id="docRef" type="text" value="ALVARA-2026-000123" />
+
+  <label for="docValidadeDias">Validade (dias a partir de agora; 0 = sem prazo)</label>
+  <input id="docValidadeDias" type="number" value="30" min="0" />
+
+  <label for="campoNomeCrianca">Nome da criança ou adolescente</label>
+  <input id="campoNomeCrianca" type="text" value="M. E. S." />
+
+  <label for="campoNomeAcompanhante">Nome do acompanhante autorizado</label>
+  <input id="campoNomeAcompanhante" type="text" value="R. S. (avó materna)" />
+
+  <label for="campoDestino">Destino da viagem</label>
+  <input id="campoDestino" type="text" value="Recife/PE" />
+
+  <label for="campoPeriodoValidade">Período de validade (texto exibido ao consulente)</label>
+  <input id="campoPeriodoValidade" type="text" value="10/08/2026 a 09/09/2026" />
+
+  <button id="btnEmitir">Emitir na blockchain</button>
+  <div class="resultado" id="resultadoEmitir"></div>
+  <div id="qrcode"></div>
+</div>
+
+<div class="card">
+  <h2>2 · Revogar por decisão judicial</h2>
+  <p class="ajuda">Assina como a vara e chama <code>revokeDocument</code>. O motivo vai como código, nunca texto livre.</p>
+
+  <label for="docRevogaId">Referência do documento</label>
+  <input id="docRevogaId" type="text" value="ALVARA-2026-000123" />
+
+  <label for="docMotivo">Motivo (código)</label>
+  <select id="docMotivo">
+    <option value="DECISAO_JUDICIAL">Decisão judicial</option>
+    <option value="ERRO_DE_EMISSAO">Erro de emissão</option>
+    <option value="SUBSTITUICAO">Substituição</option>
+  </select>
+
+  <button id="btnRevogar" class="secundario">Revogar na blockchain</button>
+  <div class="resultado" id="resultadoRevogar"></div>
+</div>
+
+<div class="card">
+  <h2>3 · Documentos emitidos nesta máquina</h2>
+  <p class="ajuda">Vem do cofre local (localStorage) — só para acompanhar a demonstração, não é fonte de verdade sobre o estado on-chain.</p>
+  <div id="listaEmissoes">Nenhum documento emitido ainda.</div>
+</div>
+
+<script src="./contracts.config.js"></script>
+<script src="./shared.js"></script>
+<script src="./cofre.mock.js"></script>
+<script src="./admin.js"></script>
+</body>
+</html>

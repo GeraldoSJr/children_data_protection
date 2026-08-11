@@ -146,5 +146,7 @@ funções inexistentes é documentação falsa, e o enunciado avisa que os diagr
 cobrados de novo na Entrega 3.
 
 A suíte de testes, essa sim, é deliberadamente enxuta: cobre o caminho central e o
-controle de acesso, nada mais. O enunciado adia validações, tratamento de erros e casos
-de borda para as entregas seguintes.
+controle de acesso de cada contrato — `test/DocumentRegistry.test.ts`,
+`test/AccessRegistry.test.ts` e `test/DisclosurePolicy.test.ts` —, nada mais. O
+enunciado adia validações, tratamento de erros e casos de borda para as entregas
+seguintes.
