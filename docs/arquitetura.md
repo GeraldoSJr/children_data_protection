@@ -1,7 +1,9 @@
 # Diagrama de Arquitetura — VerificaJus Sigilo
 
-> Versão preliminar (Entrega 1). Este diagrama é ferramenta de trabalho e deve
-> evoluir ao longo do projeto.
+> Versão final. Começou como rascunho na Entrega 1 e mudou nas duas entregas
+> seguintes — o histórico de commits deste arquivo mostra como. O que está
+> abaixo é o sistema como ele efetivamente ficou: os três contratos, as duas
+> telas do frontend e o cofre mock, todos já em código.
 
 ## Visão geral
 
@@ -104,9 +106,10 @@ não existe, e enquanto ele não passa o documento vencido continua se declarand
 ## Rede
 
 A proposta do Núcleo Jurídico indica **blockchain permissionada**, pela natureza sigilosa
-dos processos da infância e juventude. O protótipo roda em Hardhat Network — listada no
-enunciado como rede de testes aceita — com a configuração de Sepolia já pronta em
-`hardhat.config.ts`.
+dos processos da infância e juventude. O protótipo foi implantado e demonstrado na rede
+Besu da disciplina (`bc101-dev-env`, permissionada via QBFT), com Hardhat Network para
+desenvolvimento local e a configuração de Sepolia já pronta em `hardhat.config.ts` caso
+se queira demonstrar em rede pública.
 
 Nada no código depende de rede permissionada: o modelo de privacidade não pressupõe que
 a cadeia seja privada. Hash salgado, motivo codificado e ausência de PII fazem os
@@ -123,10 +126,31 @@ profundidade, não a defesa principal.
 | Página de Validação | `frontend/validar.html` + `frontend/validar.js` |
 | Código comum (rede, contratos, campos) | `frontend/shared.js` |
 
-## Fora do escopo desta entrega
+## Limitações conhecidas
 
-A integração real com PJe/SEI e o cofre de PII definitivo do TJPB seguem fora do
-escopo: o protótipo usa `frontend/cofre.mock.js`, um mock em localStorage do navegador,
-no lugar do serviço com controle de acesso próprio que o TJPB operaria em produção. O
-mock é suficiente para demonstrar a fronteira do modelo — o que sai da blockchain e como
-a página de validação exibe só os campos liberados —, mas não é código de produção.
+Esta é uma prova de conceito acadêmica, não um sistema pronto para produção. O que ela
+não resolve, deliberadamente:
+
+- **Cofre de PII.** `frontend/cofre.mock.js` é `localStorage` do navegador, não um
+  serviço com controle de acesso próprio. Em produção seria uma API do TJPB, com sua
+  própria autenticação e auditoria — nada no modelo de contratos muda para isso
+  acontecer, mas o serviço em si não foi construído.
+- **Integração com PJe/SEI.** O painel da vara (`admin.html`) simula a emissão; não há
+  integração real com o sistema processual de origem, que dispararia o registro
+  automaticamente na assinatura do magistrado.
+- **Autenticação dos consulentes externos.** A tela de validação deixa o usuário
+  escolher o próprio perfil (Polícia Federal, cia aérea, Conselho Tutelar) num `select`.
+  Em produção isso exigiria autenticação real da instituição consulente — hoje é
+  possível qualquer um se declarar qualquer perfil.
+- **Gestão de chaves.** As transações de emissão e revogação são assinadas com chaves
+  de teste públicas embutidas no frontend (ver `frontend/shared.js`), aceitável só em
+  rede de desenvolvimento descartável. Um TJPB real precisaria de custódia de chave
+  adequada para a vara emissora.
+- **Validações e casos de borda.** Os contratos não verificam, por exemplo, se um
+  `docId` já existe antes de `issueDocument` sobrescrever, nem impedem revogar um
+  documento inexistente. A suíte de testes cobre o caminho central e o controle de
+  acesso — não exaustão de casos de borda.
+
+O que o modelo *garante*, mesmo com essas lacunas: nenhum dado que identifique a
+criança, o adolescente ou a família chega à blockchain em nenhum ponto do fluxo — isso
+é verificável lendo os três contratos, não é uma promessa da interface.

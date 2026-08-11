@@ -1,7 +1,8 @@
 # Diagrama de Classes dos Contratos — VerificaJus Sigilo
 
-> Versão preliminar (Entrega 1). Este diagrama é ferramenta de trabalho e deve
-> evoluir ao longo do projeto.
+> Versão final. A superfície dos três contratos não mudou desde a Entrega 1 — o que
+> mudou foi tudo em volta deles (frontend completo, cofre mock, política de divulgação
+> em uso real). Ver `git log --follow docs/contratos.md` para o histórico.
 
 Três contratos. `AccessRegistry` é a única fonte de identidade; os outros dois leem dele
 e não guardam endereços próprios.
@@ -119,14 +120,19 @@ Revogação e substituição têm precedência sobre expiração. Um alvará rev
 venceu reporta `Revogado` — é esse o fato que importa a quem confere o documento no
 balcão.
 
-## Função central desta entrega
+## Fluxo central
 
-`issueDocument` → `consultStatus` → `revokeDocument` → `consultStatus`
+```
+issueDocument → camposLiberados (por perfil) → consultStatus → revokeDocument → consultStatus
+```
 
-Uma conta autorizada da vara registra o documento; um terceiro lê o status real; a vara
-revoga; a leitura seguinte do terceiro retorna `Revogado`. Nenhuma das partes acessou os
-autos. É o núcleo do problema executando de ponta a ponta — coberto pela suíte em
-`test/DocumentRegistry.test.ts`.
+Uma conta autorizada da vara registra o documento (`admin.html`). Um terceiro escaneia o
+QR Code, a tela de validação (`validar.html`) consulta `DisclosurePolicy.camposLiberados`
+para saber o que aquele perfil pode ver, busca só esses campos no cofre, e mostra
+`consultStatus` como `Valido`. A vara revoga por decisão judicial; a leitura seguinte do
+mesmo terceiro retorna `Revogado`. Nenhuma das partes acessou os autos em nenhum momento.
+Coberto por `test/DocumentRegistry.test.ts`, `test/DisclosurePolicy.test.ts` e
+`test/AccessRegistry.test.ts`.
 
 ## Convenção de nomes
 
@@ -139,14 +145,16 @@ Verbos genéricos de ciclo de vida em inglês: `issueDocument`, `revokeDocument`
 `supersedeDocument`, `consultStatus`. Não carregam carga jurídica e seguem a convenção
 de Solidity.
 
-## Estado desta entrega
+## Estado final
 
-Os contratos implementam **toda** a superfície descrita acima. Um diagrama que descreve
-funções inexistentes é documentação falsa, e o enunciado avisa que os diagramas serão
-cobrados de novo na Entrega 3.
+Os contratos implementam **toda** a superfície descrita acima, e o diagrama corresponde
+ao código linha por linha — nenhuma função descrita aqui é hipotética. O frontend
+(`admin.html` + `validar.html`) usa as três interfaces de ponta a ponta contra contrato
+real, não mock.
 
-A suíte de testes, essa sim, é deliberadamente enxuta: cobre o caminho central e o
-controle de acesso de cada contrato — `test/DocumentRegistry.test.ts`,
-`test/AccessRegistry.test.ts` e `test/DisclosurePolicy.test.ts` —, nada mais. O
-enunciado adia validações, tratamento de erros e casos de borda para as entregas
-seguintes.
+A suíte de testes é deliberadamente enxuta: cobre o caminho central e o controle de
+acesso de cada contrato, não exaustão de casos de borda. Ver
+[Limitações conhecidas](arquitetura.md#limitações-conhecidas) para o que fica
+explicitamente fora — validação de `docId` duplicado, autenticação real do consulente e
+gestão de chave de produção não estão cobertos, por decisão de escopo desde o início do
+projeto.
